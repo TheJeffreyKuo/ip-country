@@ -1,1 +1,2 @@
-# ip-country
+# IP to Country Finder
+Web application that allows users to determine the country associated with a specific IP address. Automatically detects the user's current IP address and display the country it is registered in. Additionally, users can manually enter any valid IP address to obtain similar information. The project integrates with the ipapi.co API to fetch location data related to IP addresses.
