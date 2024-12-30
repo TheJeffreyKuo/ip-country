@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP to Country Finder</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    async function fetchIPDetails(ip = '') {
+      const ipInput = document.getElementById('ip-input');
+      const resultDiv = document.getElementById('result');
+      const apiURL = ip ? `https://ipapi.co/${ip}/json/` : 'https://ipapi.co/json/';
+      
+      resultDiv.textContent = 'Loading...';
+
+      try {
+        const response = await fetch(apiURL);
+        if (!response.ok) throw new Error('Failed to fetch IP details');
+        
+        const data = await response.json();
+        if (data.error) throw new Error(data.reason || 'Invalid IP address');
+
+        const country = data.country_name || 'Unknown Country';
+        resultDiv.textContent = `The IP address ${data.ip} is registered in ${country}.`;
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchIPDetails();
+
+      document.getElementById('submit-btn').addEventListener('click', () => {
+        const ip = document.getElementById('ip-input').value.trim();
+        fetchIPDetails(ip);
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="content-wrapper">
+    <header>
+      <h1>IP to Country Finder</h1>
+    </header>
+    <main>
+      <p>Enter an IP address to find the country it's registered in.</p>
+      <div class="form-group">
+        <input type="text" id="ip-input" placeholder="Enter IP address">
+        <button id="submit-btn">Find Country</button>
+      </div>
+      <div id="result"></div>
+    </main>
+    <footer>
+      <p>By Jeffrey Kuo</p>
+    </footer>
+  </div>
+</body>
+</html>
